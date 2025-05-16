@@ -1,0 +1,323 @@
+html,
+body {
+    margin: 0;
+    overflow: hidden;
+
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    --surface-primal: rgb(241, 238, 224);
+    --surface-secondal: rgb(31, 87, 87);
+    --board-button-border: rgba(0, 128, 255, 0.5);
+    --glow-main: rgb(215, 254, 255);
+    --glow-addict: rgba(255, 255, 255, 0.473);
+    --glow-blue: rgb(67, 133, 255);
+    --glow-red: rgb(241, 50, 50);
+
+    --animation-length-2: 0.125s;
+    --animation-length-1_5: 0.25s;
+    --animation-length: 0.5s;
+    --animation-length-0_5: 1s;
+    --animation-length-0_25: 1.5s;
+
+
+    --button-margin: 1rem;
+    --button-margin-collapsed: 0.2rem;
+    --button-size: 7rem;
+    --button-size-collapsed: 5rem;
+}
+
+body {
+    background: radial-gradient(circle, #002e36, #051125);
+    animation: animation-rotate-0-360deg 10s infinite;
+}
+
+* {
+    font-family: system-ui;
+    font-weight: 500;
+}
+
+
+@media (max-width: 600px) {
+    body {
+        --button-size: 20vw;
+        --button-size-collapsed: 18vw;
+        --button-margin: 2vw;
+        --button-margin-collapsed: 1vw;
+    }
+
+    .board-button svg {
+        width: 25%;
+    }
+
+}
+
+@media (max-height: 630px) and ((min-width: 860px)) {
+    #content {
+        flex-direction: row !important;
+    }
+}
+
+#app {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#content {
+    padding: 0rem;
+    border-radius: 1rem;
+    border: none;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#scores {
+    display: flex;
+    flex-direction: row;
+    width: 9rem;
+    justify-content: space-between;
+
+    padding: 0.5rem;
+    border-radius: 52rem;
+
+    background-color: #002e36;
+    border: 0.125rem solid #006475;
+
+    span {
+        padding: 0.125rem 1rem;
+        border-radius: 52rem;
+    }
+}
+
+#user {
+    background-color: var(--glow-blue);
+    color: white;
+}
+
+#enemy {
+    background-color: var(--glow-red);
+    color: white;
+
+}
+
+#board {
+    position: relative;
+    margin: 1rem 0;
+    display: flex;
+    flex-wrap: nowrap;
+    flex-direction: column;
+    align-content: center;
+    align-items: center;
+    justify-content: center;
+    width: fit-content;
+    height: fit-content;
+    overflow: hidden;
+    padding: 1rem;
+    border-radius: 1.5rem;
+}
+
+#board.draw {
+    border: max(1px, 0.125rem) solid #006475;
+}
+
+#board.x {
+    border: max(1px, 0.125rem) solid var(--glow-blue);
+    /* box-shadow: 0 0 1rem 0 var(--glow-blue), 0 0 1rem 0 var(--glow-blue) inset; */
+
+}
+
+#board.o {
+    border: max(1px, 0.125rem) solid var(--glow-red);
+    /* box-shadow: 0 0 1rem 0 var(--glow-red), 0 0 1rem 0 var(--glow-red) inset; */
+}
+
+.board-row {
+    display: flex;
+    flex-direction: row;
+}
+
+.board-button {
+    opacity: 50%;
+    position: relative;
+    background: none;
+    height: var(--button-size);
+    width: var(--button-size);
+    padding: 0rem;
+    margin: var(--button-margin);
+    border-radius: 0.5rem;
+
+    border: max(1px, 0.125rem) solid var(--glow-main);
+
+    *,
+    & {
+        transition: all 300ms;
+    }
+
+
+
+    svg {
+        scale: 2;
+
+        * {
+            transform-origin: 50% -50%;
+            fill: var(--glow-main);
+            stroke-width: 1rem;
+            stroke: var(--glow-main);
+        }
+    }
+}
+
+.board-button:not(.board-button--collapsed) {
+    cursor: pointer;
+}
+
+.board-button--collapsed {
+    margin: var(--button-margin-collapsed);
+    height: var(--button-size-collapsed);
+    width: var(--button-size-collapsed);
+
+    svg {
+        scale: 1.5 !important;
+    }
+}
+
+.board-button--o,
+.board-button--x {
+    opacity: 100%;
+}
+
+.board-button--x {
+    background-color: var(--glow-blue);
+    /* box-shadow: 0 0 1rem 0 var(--glow-blue), 0 0 1rem 0 var(--glow-blue) inset; */
+
+    svg {
+
+
+        #top-left {
+            animation: x-top-left var(--animation-length);
+        }
+
+        #top-right {
+            animation: x-top-right var(--animation-length) 0.07s;
+        }
+
+        #bottom-right {
+            animation: x-bottom-right var(--animation-length) 0.14s;
+        }
+
+        #bottom-left {
+            animation: x-bottom-left var(--animation-length) 0.21s;
+        }
+    }
+}
+
+.board-button--o {
+    /* box-shadow: 0 0 1rem 0 var(--glow-red), 0 0 1rem 0 var(--glow-red) inset; */
+    background-color: var(--glow-red);
+
+    svg {
+
+        #second {
+            animation: o-second var(--animation-length-2);
+        }
+
+        #third {
+            animation: o-third var(--animation-length-1_5);
+        }
+
+        #fourth {
+            animation: o-fourth var(--animation-length);
+        }
+    }
+}
+
+#restart {
+    transition: all 100ms ease;
+    position: relative;
+    cursor: pointer;
+
+    display: block;
+    width: 10rem;
+    padding: 1rem 0;
+    text-align: center;
+    background-color: #002e36;
+    border: 0.125rem solid #006475;
+    border-radius: 52rem;
+    color: #006475;
+    font-size: 1rem;
+}
+
+#restart:hover {
+    border-color: #4aca9f;
+    color: #4aca9f;
+    /* box-shadow: 0 0 1rem 0 #006475; */
+}
+
+#restart:active {
+    color: white;
+    background-color: #006475;
+}
+
+
+@keyframes animation-rotate-0-360deg {
+    0% {
+        --animation-rotate-0-360deg: 0deg;
+    }
+
+    100% {
+        --animation-rotate-0-360deg: 360deg;
+    }
+}
+
+
+
+
+@keyframes x-top-left {
+    50% {
+        transform: translate(-4rem, -4rem);
+    }
+}
+
+@keyframes x-top-right {
+    50% {
+        transform: translate(4rem, -4rem);
+    }
+}
+
+@keyframes x-bottom-right {
+    50% {
+        transform: translate(4rem, 4rem);
+    }
+}
+
+@keyframes x-bottom-left {
+    50% {
+        transform: translate(-4rem, 4rem);
+    }
+}
+
+@keyframes o-second {
+    0% {
+        rotate: -45deg;
+    }
+}
+
+@keyframes o-third {
+    0% {
+        rotate: -90deg;
+    }
+}
+
+@keyframes o-fourth {
+    0% {
+        rotate: -135deg;
+    }
+}
